@@ -55,7 +55,7 @@ const Login = ({ onLogin, onSwitchToRegister }) => {
       };
 
       const response = await axios.post(
-        "https://seta-api-3g5xl.ondigitalocean.app/api/students/login",
+        "https://vaalsetaapi-7hrsa.ondigitalocean.app/api/students/login",
         payload,
         {
           headers: { "Content-Type": "application/json" },
@@ -72,7 +72,7 @@ const Login = ({ onLogin, onSwitchToRegister }) => {
 
       // Fetch student full profile
       const profileRes = await axios.get(
-        `https://seta-api-3g5xl.ondigitalocean.app/api/students/student/${user_id}`,
+        `https://vaalsetaapi-7hrsa.ondigitalocean.app/api/students/student/${user_id}`,
       );
 
       const student = profileRes.data;
@@ -121,7 +121,7 @@ const Login = ({ onLogin, onSwitchToRegister }) => {
           {imageLoaded ? (
             <div className="flex items-center justify-center">
               <img
-                src="https://res.cloudinary.com/dbuuizuka/image/upload/v1772775906/Logo-HWSETA_vaice1.png"
+                src="https://res.cloudinary.com/dbuuizuka/image/upload/v1761697835/id3tj44Wsz_1761674029816_z2fjde.png"
                 alt="Graduation Cap"
                 className="w-20 h-20 object-contain"
                 onError={() => setImageLoaded(false)}

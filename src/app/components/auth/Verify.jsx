@@ -61,7 +61,7 @@ export default function Verify({ onVerify }) {
       };
 
       const res = await axios.post(
-        "https://seta-api-3g5xl.ondigitalocean.app/api/students/verify-token",
+        "https://vaalsetaapi-7hrsa.ondigitalocean.app/api/students/verify-token",
         payload
       );
 
@@ -87,12 +87,12 @@ export default function Verify({ onVerify }) {
 
     try {
       const res = await axios.post(
-        "https://seta-api-3g5xl.ondigitalocean.app/api/students/resend-token",
+        "https://vaalsetaapi-7hrsa.ondigitalocean.app/api/students/resend-token",
         { email }
       );
 
       setSuccess(res.data.message || "Verification code resent");
-      setCooldown(60);
+      setCooldown(60); // ⏱ 60-second cooldown
     } catch (err) {
       setError(err.response?.data?.message || "Failed to resend token");
     } finally {
@@ -114,7 +114,7 @@ export default function Verify({ onVerify }) {
           <div className="flex justify-center mb-4">
             {imageLoaded ? (
               <img
-                src="https://res.cloudinary.com/dbuuizuka/image/upload/v1772775906/Logo-HWSETA_vaice1.png"
+                src="https://res.cloudinary.com/dbuuizuka/image/upload/v1761697835/id3tj44Wsz_1761674029816_z2fjde.png"
                 alt="Graduation Cap"
                 className="w-20 h-20 object-contain"
                 onError={() => setImageLoaded(false)}

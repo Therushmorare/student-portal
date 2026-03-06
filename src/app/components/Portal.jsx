@@ -5,7 +5,7 @@ import { useRouter } from "next/navigation";
 import { Home, FileText, User, Bell, CreditCard, IdCard, GraduationCap } from "lucide-react";
 import { COLORS } from "../constants/colors";
 
-import { StudentProvider, useStudent } from "../constants/context";
+import { StudentProvider, useStudent } from "../constants/context"; // ✅ import context
 import Header from "./Header";
 import Dashboard from "./Dashboard/Dashboard";
 import Profile from "./Dashboard/Profile";

@@ -17,7 +17,7 @@ const Registration = ({ onRegister, onSwitchToLogin }) => {
     idNumber: "",
     password: "",
     confirmPassword: "",
-    faculty: "Engineering and Technology",
+    faculty: "Faculty of Applied & Computer Science",
     programme: ""
   });
 
@@ -30,19 +30,17 @@ const Registration = ({ onRegister, onSwitchToLogin }) => {
   const [imageLoaded, setImageLoaded] = useState(true);
 
   const faculties = [
-    "Engineering and Technology",
-    "Business and Economics",
-    "Health Sciences",
-    "Humanities",
-    "Natural Sciences"
+    "Faculty of Applied & Computer Science",
+    "Faculty of Management Science",
+    "Faculty of Engineering & Technology",
+    "Faculty of Human Science",
   ];
 
   const programmes = {
-    "Engineering and Technology": ["Computer Science", "Electrical Engineering", "Mechanical Engineering"],
-    "Business and Economics": ["Business Administration", "Economics", "Accounting"],
-    "Health Sciences": ["Nursing", "Medicine", "Pharmacy"],
-    "Humanities": ["Psychology", "Education", "Social Work"],
-    "Natural Sciences": ["Mathematics", "Physics", "Chemistry"]
+    "Faculty of Applied & Computer Science": ["Analytical Chemistry", "Agricultural Management", "Information Technology", "Non-Destructive Testing", "Biotechnology", "Environmental Science", "Extended Information Technology", "Medical Laboratory Science"],
+    "Faculty of Management Science": ["Financial Information Systems", "Cost & Management Accounting", "Internal Auditing", "Human Resource Management", "Logistics & Supply Chain Management", "Marketing", "Retail Business Management", "Sport Management"],
+    "Faculty of Engineering & Technology": ["Chemical Engineering", "Civil Engineering", "Industrial Engineering", "Mechanical Engineering", "Metallurgical Engineering", "Electronic Engineering", "Power Engineering", "Process Control Engineering", "Computer Systems Engineering", "Operations Management", "Electrical Engineering"],
+    "Faculty of Human Science": ["Fashion", "Photography", "Graphic Design & Fine Art", "Food Service Management", "Tourism Management", "Public Relations", "Ecotourism Management", "Legal Assistance", "Labour Law", "Safety Management", "Policing", "B Ed (Senior Phase & FET Teaching)", "Communication Studies"],
   };
 
   const handleChange = (field, value) => {
@@ -92,7 +90,7 @@ const Registration = ({ onRegister, onSwitchToLogin }) => {
       };
 
       const response = await axios.post(
-        "https://seta-api-3g5xl.ondigitalocean.app/api/students/signup",
+        "https://vaalsetaapi-7hrsa.ondigitalocean.app/api/students/signup",
         payload,
         { headers: { "Content-Type": "application/json" } }
       );
@@ -120,7 +118,7 @@ const Registration = ({ onRegister, onSwitchToLogin }) => {
           {imageLoaded ? (
             <div className="flex items-center justify-center">
               <img
-                src="https://res.cloudinary.com/dbuuizuka/image/upload/v1772775906/Logo-HWSETA_vaice1.png"
+                src="https://res.cloudinary.com/dbuuizuka/image/upload/v1761697835/id3tj44Wsz_1761674029816_z2fjde.png"
                 alt="Graduation Cap"
                 className="w-20 h-20 object-contain"
                 onError={() => setImageLoaded(false)}
@@ -237,13 +235,18 @@ const Registration = ({ onRegister, onSwitchToLogin }) => {
                 value={formData.faculty}
                 onChange={e => {
                   handleChange("faculty", e.target.value);
-                  handleChange("programme", "");
+                  handleChange("programme", ""); // reset programme when faculty changes
                 }}
                 className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2"
-                style={{ borderColor: COLORS.border }}
+                style={{ borderColor: errors.faculty ? COLORS.danger : COLORS.border }}
               >
-                {faculties.map(fac => <option key={fac} value={fac}>{fac}</option>)}
+                {/*Add placeholder option */}
+                <option value="">Select Faculty</option>
+                {faculties.map(fac => (
+                  <option key={fac} value={fac}>{fac}</option>
+                ))}
               </select>
+              {errors.faculty && <p className="text-sm mt-1" style={{ color: COLORS.danger }}>{errors.faculty}</p>}
             </div>
 
             {/* Programme */}
@@ -254,9 +257,12 @@ const Registration = ({ onRegister, onSwitchToLogin }) => {
                 onChange={e => handleChange("programme", e.target.value)}
                 className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2"
                 style={{ borderColor: errors.programme ? COLORS.danger : COLORS.border }}
+                disabled={!formData.faculty} //disable until faculty selected
               >
                 <option value="">Select Programme</option>
-                {programmes[formData.faculty]?.map(prog => <option key={prog} value={prog}>{prog}</option>)}
+                {(programmes[formData.faculty] || []).map(prog => (
+                  <option key={prog} value={prog}>{prog}</option>
+                ))}
               </select>
               {errors.programme && <p className="text-sm mt-1" style={{ color: COLORS.danger }}>{errors.programme}</p>}
             </div>

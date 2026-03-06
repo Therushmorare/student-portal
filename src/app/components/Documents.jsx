@@ -46,7 +46,7 @@ const DocumentUpload = () => {
 
     try {
       const res = await fetch(
-        `https://seta-api-3g5xl.ondigitalocean.app/api/students/documents/${student.id}`
+        `https://vaalsetaapi-7hrsa.ondigitalocean.app/api/students/documents/${student.id}`
       );
 
       if (!res.ok) {
@@ -117,7 +117,7 @@ const DocumentUpload = () => {
 
     try {
       const res = await fetch(
-        "https://seta-api-3g5xl.ondigitalocean.app/api/students/upload/supporting-documents",
+        "https://vaalsetaapi-7hrsa.ondigitalocean.app/api/students/upload/supporting-documents",
         {
           method: "POST",
           body: formData,
