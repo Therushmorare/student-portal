@@ -24,7 +24,7 @@ const StudentBankingProfile = ({ student, onUpdate, showToast }) => {
       setAlert(null);
       try {
         const res = await fetch(
-          `https://vaalsetaapi-7hrsa.ondigitalocean.app/api/students/bankingDetails/${student.id}`
+          `https://seta-api-3g5xl.ondigitalocean.app/api/students/bankingDetails/${student.id}`
         );
 
         if (res.status === 404) {
@@ -98,8 +98,8 @@ const StudentBankingProfile = ({ student, onUpdate, showToast }) => {
 
     try {
       const endpoint = hasExisting
-        ? "https://vaalsetaapi-7hrsa.ondigitalocean.app/api/students/banking-details/update"
-        : "https://vaalsetaapi-7hrsa.ondigitalocean.app/api/students/banking-details";
+        ? "https://seta-api-3g5xl.ondigitalocean.app/api/students/banking-details/update"
+        : "https://seta-api-3g5xl.ondigitalocean.app/api/students/banking-details";
 
       const res = await fetch(endpoint, {
         method: "POST",
@@ -156,7 +156,6 @@ const StudentBankingProfile = ({ student, onUpdate, showToast }) => {
                 value={form.bankName}
                 onChange={handleChange}
                 className={`w-full pl-10 pr-4 py-2 rounded-lg border focus:outline-none ${fieldErrors.bankName ? "border-red-500" : ""}`}
-                style={{ borderColor: COLORS.border }}
               />
             </div>
             {fieldErrors.bankName && <p className="mt-1 text-sm text-red-600">{fieldErrors.bankName}</p>}
@@ -170,8 +169,6 @@ const StudentBankingProfile = ({ student, onUpdate, showToast }) => {
               value={form.accountType}
               onChange={handleChange}
               className={`w-full px-4 py-2 rounded-lg border ${fieldErrors.accountType ? "border-red-500" : ""}`}
-              style={{ borderColor: COLORS.border }}
-
             >
               <option value="">Select account type</option>
               <option value="savings">Savings</option>
@@ -192,7 +189,6 @@ const StudentBankingProfile = ({ student, onUpdate, showToast }) => {
                 value={form.accountNumber}
                 onChange={handleChange}
                 className={`w-full pl-10 pr-4 py-2 rounded-lg border ${fieldErrors.accountNumber ? "border-red-500" : ""}`}
-                style={{ borderColor: COLORS.border }}
               />
             </div>
             {fieldErrors.accountNumber && <p className="mt-1 text-sm text-red-600">{fieldErrors.accountNumber}</p>}

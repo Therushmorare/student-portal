@@ -4,7 +4,7 @@ import { useState, useEffect } from "react";
 import axios from "axios";
 import { COLORS } from "../../constants/colors";
 
-const API_BASE = "https://vaalsetaapi-7hrsa.ondigitalocean.app";
+const API_BASE = "https://seta-api-3g5xl.ondigitalocean.app";
 
 const apiToForm = (data) => ({
   dateOfBirth: data?.date_of_birth ?? "",
@@ -27,9 +27,7 @@ const StudentBiographic = ({ student, showToast }) => {
     gender: "",
     address: "",
   });
-
   const [errors, setErrors] = useState({});
-  const [inlineMessage, setInlineMessage] = useState(null);
   const [loading, setLoading] = useState(false);
   const [initialLoading, setInitialLoading] = useState(true);
 
@@ -42,8 +40,10 @@ const StudentBiographic = ({ student, showToast }) => {
         const res = await axios.get(
           `${API_BASE}/api/students/biographical/${userId}`
         );
+
+        console.log("GET biographical:", res.data);
         setFormData(apiToForm(res.data));
-      } catch {
+      } catch (err) {
         console.warn("No existing biographical data");
       } finally {
         setInitialLoading(false);
@@ -53,18 +53,10 @@ const StudentBiographic = ({ student, showToast }) => {
     fetchBio();
   }, [userId]);
 
-  /* ================= AUTO DISMISS MESSAGE ================= */
-  useEffect(() => {
-    if (!inlineMessage) return;
-    const timer = setTimeout(() => setInlineMessage(null), 3000);
-    return () => clearTimeout(timer);
-  }, [inlineMessage]);
-
   /* ================= HANDLERS ================= */
   const handleChange = (field, value) => {
     setFormData((prev) => ({ ...prev, [field]: value }));
     setErrors((prev) => ({ ...prev, [field]: null }));
-    setInlineMessage(null);
   };
 
   const validate = () => {
@@ -72,16 +64,7 @@ const StudentBiographic = ({ student, showToast }) => {
     if (!formData.dateOfBirth) errs.dateOfBirth = "Date of birth is required";
     if (!formData.gender) errs.gender = "Gender is required";
     if (!formData.address.trim()) errs.address = "Address is required";
-
     setErrors(errs);
-
-    if (Object.keys(errs).length > 0) {
-      const firstField = Object.keys(errs)[0];
-      document
-        .querySelector(`[name="${firstField}"]`)
-        ?.scrollIntoView({ behavior: "smooth", block: "center" });
-    }
-
     return Object.keys(errs).length === 0;
   };
 
@@ -91,26 +74,27 @@ const StudentBiographic = ({ student, showToast }) => {
 
     setLoading(true);
     setErrors({});
-    setInlineMessage(null);
+
+    const payload = formToApi(userId, formData);
+    console.log("POST payload:", payload);
 
     try {
-      await axios.post(
+      const res = await axios.post(
         `${API_BASE}/api/students/biographical`,
-        formToApi(userId, formData)
+        payload
       );
 
+      console.log("POST response:", res.data);
+
       showToast?.("Biographical details saved successfully", "success");
-      setInlineMessage({
-        type: "success",
-        text: "Biographical details saved successfully",
-      });
     } catch (err) {
+      console.error("POST error:", err.response?.data || err);
+
       const message =
         err.response?.data?.message || "Failed to save biographical details";
-
       showToast?.(message, "error");
-      setInlineMessage({ type: "error", text: message });
 
+      // Optional: map backend field errors if they exist
       if (err.response?.data?.errors) {
         const backendErrors = {};
         Object.entries(err.response.data.errors).forEach(([key, value]) => {
@@ -137,21 +121,12 @@ const StudentBiographic = ({ student, showToast }) => {
           </SuccessButton>
         }
       >
-        {inlineMessage && (
-          <InlineAlert type={inlineMessage.type}>
-            {inlineMessage.text}
-          </InlineAlert>
-        )}
-
         <Grid>
           <Field label="Date of Birth" error={errors.dateOfBirth}>
             <input
-              name="dateOfBirth"
               type="date"
               value={formData.dateOfBirth}
-              onChange={(e) =>
-                handleChange("dateOfBirth", e.target.value)
-              }
+              onChange={(e) => handleChange("dateOfBirth", e.target.value)}
               className="w-full px-4 py-2 border rounded-lg bg-gray-50"
               style={{ borderColor: COLORS.border }}
             />
@@ -159,11 +134,9 @@ const StudentBiographic = ({ student, showToast }) => {
 
           <Field label="Gender" error={errors.gender}>
             <select
-              name="gender"
               value={formData.gender}
               onChange={(e) => handleChange("gender", e.target.value)}
               className="w-full px-4 py-2 border rounded-lg bg-gray-50"
-              style={{ borderColor: COLORS.border }}
             >
               <option value="">Select gender</option>
               <option value="male">Male</option>
@@ -174,12 +147,10 @@ const StudentBiographic = ({ student, showToast }) => {
 
           <Field label="Address" error={errors.address} full>
             <textarea
-              name="address"
               rows={3}
               value={formData.address}
               onChange={(e) => handleChange("address", e.target.value)}
               className="w-full px-4 py-2 border rounded-lg bg-gray-50"
-              style={{ borderColor: COLORS.border }}
             />
           </Field>
         </Grid>
@@ -200,9 +171,7 @@ const Section = ({ title, action, children }) => (
 );
 
 const Grid = ({ children }) => (
-  <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-    {children}
-  </div>
+  <div className="grid grid-cols-1 md:grid-cols-2 gap-6">{children}</div>
 );
 
 const Field = ({ label, error, children, full }) => (
@@ -222,18 +191,5 @@ const SuccessButton = ({ children, ...props }) => (
     {children}
   </button>
 );
-
-const InlineAlert = ({ type, children }) => {
-  const styles =
-    type === "success"
-      ? "bg-green-50 border-green-300 text-green-800"
-      : "bg-red-50 border-red-300 text-red-800";
-
-  return (
-    <div className={`mb-4 px-4 py-3 border rounded-lg text-sm ${styles}`}>
-      {children}
-    </div>
-  );
-};
 
 export default StudentBiographic;

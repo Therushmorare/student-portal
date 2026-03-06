@@ -6,7 +6,6 @@ const StudentContext = createContext();
 
 export function StudentProvider({ children, initialStudent }) {
 
-  // Updated to handle multiple files per document type
   const calculateProgress = (updatedStudent) => {
     const requiredDocs = ['idDocument', 'proofOfResidence', 'academicTranscript', 'cv', 'bankStatement'];
     const uploadedDocs = updatedStudent.uploadedDocuments || {};

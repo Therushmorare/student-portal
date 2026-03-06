@@ -35,7 +35,7 @@ const StudentDashboard = ({ student, onNavigate }) => {
       description: student.setaAllocation ? 'Allocated' : 'Awaiting allocation'
     },
     { 
-      label: 'Host Company', 
+      label: 'Placement', 
       status: student.placement ? 'completed' : 'pending', 
       icon: Building2,
       description: student.placement ? 'Placed' : 'Awaiting placement'
@@ -143,7 +143,7 @@ const StudentDashboard = ({ student, onNavigate }) => {
 
         <div className="rounded-lg p-6 shadow-sm" style={{ backgroundColor: COLORS.bgWhite }}>
           <div className="flex items-center justify-between mb-4">
-            <h3 className="font-semibold" style={{ color: COLORS.text }}>Host Company</h3>
+            <h3 className="font-semibold" style={{ color: COLORS.text }}>Placement</h3>
             <Building2 className="w-5 h-5" style={{ color: COLORS.success }} />
           </div>
           <p className="text-lg font-bold mb-2" style={{ color: COLORS.primary }}>

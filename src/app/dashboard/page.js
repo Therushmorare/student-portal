@@ -19,7 +19,7 @@ const mockStudent = {
     {
       id: 1,
       title: 'Welcome!',
-      message: 'Welcome to the Vaal Student Portal. Please upload your documents to get started.',
+      message: 'Welcome to the Student Portal. Please upload your documents to get started.',
       date: new Date().toISOString(),
       read: false,
       type: 'system'

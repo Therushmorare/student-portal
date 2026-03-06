@@ -34,7 +34,7 @@ export default function MFA({ onVerify }) {
       const payload = { mfa_code: form.mfa_code.trim() };
 
       const response = await axios.post(
-        "https://vaalsetaapi-7hrsa.ondigitalocean.app/api/students/verify-mfa",
+        "https://seta-api-3g5xl.ondigitalocean.app/api/students/verify-mfa",
         payload,
         { headers: { "Content-Type": "application/json" } }
       );
@@ -68,7 +68,7 @@ export default function MFA({ onVerify }) {
             {imageLoaded ? (
               <div className="flex items-center justify-center">
                 <img
-                  src="https://res.cloudinary.com/dbuuizuka/image/upload/v1761697835/id3tj44Wsz_1761674029816_z2fjde.png"
+                  src="https://res.cloudinary.com/dbuuizuka/image/upload/v1772775906/Logo-HWSETA_vaice1.png"
                   alt="Graduation Cap"
                   className="w-20 h-20 object-contain"
                   onError={() => setImageLoaded(false)}
